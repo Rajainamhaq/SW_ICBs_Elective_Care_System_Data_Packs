@@ -1,0 +1,2212 @@
+---
+title: 
+  "Elective Care System Data Packs for<br>Bath And North East Somerset, Swindon And Wiltshire Integrated Care Board"
+#date: "2026-02-26"  
+editor: visual
+output: html_document
+format:  
+  html:
+  # Table of Contents options
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    toc-title: Contents
+    number-sections: false
+    number-depth: 3
+     # Render options
+    theme: yeti # selected thames
+  #  css: NHS_report_theme.css
+    anchor-sections: false
+    html-math-method: katex
+    # Code options
+    code-tools:
+      source: false
+      toggle: false
+      caption: none
+    embed-resources: true
+    standalone: true
+    # URL options
+    link-external-icon: true
+    link-external-newwindow: true
+    # References
+    citations-hover: true
+    footnotes-hover: true
+    callout-appearance: simple
+    callout-collapse: true
+    cap-location: bottom
+    title-block-banner: '#005eb8'
+    backgroundcolor: '#f0f4f5'
+    mainfont: 'Arial'
+css: assets/NHS_report_theme.css
+---
+
+```{r echo=FALSE,  message=FALSE, warning = FALSE}
+
+parameter_NHS_Blue <- rgb(0,94,184, maxColorValue = 255)
+
+# set folder path
+#setwd("C:/Users/raja.haq1/Documents/GitHub/Elective_Care_System_Data_Packs") 
+library(here)
+#here()
+
+# read the written data from drive.
+source(here("R","fun_packages_connect_data_RTT_perfv1.R"))
+
+#create tables
+source(here("R","setup_tables_RTT_perf.R"))
+#call all functions
+source(here("R","call_all_functions_RTT_perf.R")) # all fun for RTT 
+source(here("R","call_all_functions_Wait_to_1st_Activity.R"))
+source(here("R","Call_all_functions_52_week_perc.R"))
+source(here("R","Call_all_functions_Pre_referrals_Adv.R"))
+source(here("R","Call_all_functions_pifu_missed_appt.R"))
+source(here("R","Call_all_functions_cancer.R"))
+source(here("R","Call_all_functions_diagnostics.R"))
+source(here("R","key_summaryv2_date_row_test.R"))
+source(here("R","Call_all_functions_validation.R"))
+source(here("R","Call_all_functions_clocks.R"))
+source(here("R","Call_all_functions_specific_acute_activity.R"))
+## functions to auto FYs
+source(here("R","Call_all_functions_auto_fy_change.R"))
+source(here("R","call_functions_timeseries_plot.R"))
+
+################# End of main data frame creation #############
+
+```
+
+# Key Summary Table
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+ key_summary_main_gt
+
+```
+
+::: {.callout-note collapse="true" style="font-size:9px;"}
+## Data Sources
+
+-   Month = RTT monthly published statistics
+-   Plans = Plans submitted during the 25/26 planning round
+-   WLMDS = Waiting List Minimum Data Set
+-   DM01 = Monthly Diagnostic Waiting Times and Activity
+-   SUS OPA = Secondary Uses Statistics Outpatient Appointments
+-   EROC = Elective Recovery Outpatient Collection
+-   NTDC = National Theatre Data Collection
+:::
+
+::: {.callout-note collapse="true" style="font-size:10px;"}
+## Dashboard links
+
+-   <a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=3">View Cancer dashboard</a>
+-   <a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestDiagnosticsDashboard/NationalOverview?:iid=1">View Diagnostics dashboard</a>
+-   <a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1">View Outpatients dashboard</a>
+-   <a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestRTTDashboard_17532944816680/NationalOverview?:iid=1">View RTT dashboard</a>\
+-   <a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/LatestPosition?:iid=1">View Theatres dashboard</a>
+:::
+
+# Waiting List
+
+**2025/26 elective waiting list priority metrics**
+
+The national elective priority to improve patient outcomes in 2025/26 is to reduce the time people wait for elective care. This is to be achieved through improving the percentage of patients waiting no longer than 18 weeks for elective treatment to [**65%**]{style="color:#005EB8;"} nationally by March 2027, with every trust expected to deliver a minimum [**5**]{style="color:#005EB8;"} percentage points improvement. Systems are expected to continue to improve performance against the cancer 62-day and 28-day Faster Diagnosis Standard (FDS) to [**75%**]{style="color:#005EB8;"} and [**80%**]{style="color:#005EB8;"} respectively by March 2027. Further details can be found here: <a href="https://www.england.nhs.uk/long-read/2025-26-priorities-and-operational-planning-guidance" target="_blank"> 2025-26 Priorities and Operational Planning Guidance</a>
+
+## Change in waiting list
+
+### Clocks Starts
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- fun_clock_starts_REGION_timeseries()
+fun_clocks_plot_timeseries(df_timeseries)
+```
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_clock_starts_ICB_timeseries("BSW")
+fun_clocks_plot_timeseries(df_timeseries)
+
+```
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_clock_starts_ORG_timeseries("RN3")
+fun_clocks_plot_timeseries(df_timeseries)
+
+```
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_clock_starts_ORG_timeseries("RD1")
+fun_clocks_plot_timeseries(df_timeseries)
+
+```
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_clock_starts_ORG_timeseries("RNZ")
+fun_clocks_plot_timeseries(df_timeseries)
+
+```
+:::
+::::
+
+### Clocks Stops
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- fun_clock_stops_REGION_timeseries()
+fun_clocks_plot_timeseries(df_timeseries)
+```
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_clock_stops_ICB_timeseries("BSW")
+fun_clocks_plot_timeseries(df_timeseries)
+
+```
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_clock_stops_ORG_timeseries("RN3")
+fun_clocks_plot_timeseries(df_timeseries)
+```
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_clock_stops_ORG_timeseries("RD1")
+fun_clocks_plot_timeseries(df_timeseries)
+```
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_clock_stops_ORG_timeseries("RNZ")
+fun_clocks_plot_timeseries(df_timeseries)
+```
+:::
+::::
+
+### RTT waiting list
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- fun_rtt_waiting_list_REGION_timeseries()
+fun_clocks_plot_timeseries(df_timeseries)
+```
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_rtt_waiting_list_ICB_timeseries("BSW")
+fun_clocks_plot_timeseries(df_timeseries)
+
+```
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_rtt_waiting_list_ORG_timeseries("RN3")
+fun_clocks_plot_timeseries(df_timeseries)
+```
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_rtt_waiting_list_ORG_timeseries("RD1")
+fun_clocks_plot_timeseries(df_timeseries)
+```
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_rtt_waiting_list_ORG_timeseries("RNZ")
+fun_clocks_plot_timeseries(df_timeseries)
+```
+:::
+::::
+
+### RTT waiting list and clocks table
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_table <- fun_rtt_waiting_list_REGION()
+fun_fmt_rtt_waiting_list(df_table)
+```
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_table <- fun_rtt_waiting_list_ICB("BSW")
+fun_fmt_rtt_waiting_list(df_table)
+```
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_table <- fun_rtt_waiting_list_ORG("RN3")
+fun_fmt_rtt_waiting_list(df_table)
+```
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_table <- fun_rtt_waiting_list_ORG("RD1")
+fun_fmt_rtt_waiting_list(df_table)
+```
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_table <- fun_rtt_waiting_list_ORG("RNZ")
+fun_fmt_rtt_waiting_list(df_table)
+```
+:::
+::::
+
+### RTT waiting list and clocks waterfall chart
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#water fall chart
+fun_rtt_waiting_list_waterfall_REGION()
+```
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#water fall chart
+fun_rtt_waiting_list_waterfall_ICB("BSW")
+```
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#water fall chart
+fun_rtt_waiting_list_waterfall_ORG("RN3")
+```
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#water fall chart
+fun_rtt_waiting_list_waterfall_ORG("RD1")
+```
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+fun_rtt_waiting_list_waterfall_ORG("RNZ")
+```
+:::
+::::
+
+## RTT Performance
+
+Improve the percentage of patients waiting no longer than 18 weeks for treatment to [**65%**]{style="color:#005EB8;"} nationally by March 2027, with every trust expected to deliver a minimum [**5**]{style="color:#005EB8;"} percentage points improvement against the November 2025 baseline.
+
+::::::::::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+ df_timeseries <- fun_RTT_Perf_REGION_timeseries()
+#plot the time series
+ fun_RTT_Perf_Plot_timeseries(df_timeseries)
+#get the box values
+ box_value <- fun_for_box_value(df_timeseries)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   Latest RTT monthly published statistics for [`r box_value[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[2], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_RTT_Perf_REGION()
+#format the table
+fun_fmt_RTT_Perf(df_provider)
+```
+
+::: {.callout-note collapse="false"}
+# WLMDS dashboard link
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+:::
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_RTT_Perf_ICB_timeseries("BSW")
+fun_RTT_Perf_Plot_timeseries(df_timeseries)
+#get the box values
+ box_value <- fun_for_box_value(df_timeseries)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   Latest RTT monthly published statistics for [`r box_value[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[2], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_RTT_Perf_ICB("BSW")
+fun_fmt_RTT_Perf(df_provider)
+```
+
+::: {.callout-note collapse="false"}
+# WLMDS dashboard link
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+:::
+
+## Organisations
+
+:::::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_RTT_Perf_ORG_timeseries("RN3")
+fun_RTT_Perf_Plot_timeseries(df_timeseries)
+#get the box values
+ box_value <- fun_for_box_value(df_timeseries)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   `r box_value[8]` baseline is [`r box_value[6]`%]{style="color:#005EB8; font-weight:bold;"}
+-   `r box_value[7]` target is [`r box_value[5]`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest RTT monthly published statistics for [`r box_value[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[2], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_RTT_Perf_ORG("RN3")
+fun_fmt_RTT_Perf(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_RTT_Perf_ORG_timeseries("RD1")
+fun_RTT_Perf_Plot_timeseries(df_timeseries)
+#get the box values
+ box_value <- fun_for_box_value(df_timeseries)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   `r box_value[8]` baseline is [`r box_value[6]`%]{style="color:#005EB8; font-weight:bold;"}
+-   `r box_value[7]` target is [`r box_value[5]`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest RTT monthly published statistics for [`r box_value[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[2], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_RTT_Perf_ORG("RD1")
+fun_fmt_RTT_Perf(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_RTT_Perf_ORG_timeseries("RNZ")
+fun_RTT_Perf_Plot_timeseries(df_timeseries)
+#get the box values
+ box_value <- fun_for_box_value(df_timeseries)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   `r box_value[8]` baseline is [`r box_value[6]`%]{style="color:#005EB8; font-weight:bold;"}
+-   `r box_value[7]` target is [`r box_value[5]`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest RTT monthly published statistics for [`r box_value[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[2], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_RTT_Perf_ORG("RNZ")
+fun_fmt_RTT_Perf(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+::::::
+:::::::::::
+
+## Wait to first activity
+
+Improve the percentage of patients waiting no longer than 18 weeks for a first activity to [**72%**]{style="color:#005EB8;"} nationally by March 2027, with every trust expected to deliver a minimum [**5**]{style="color:#005EB8;"} percentage points improvement
+
+::::::::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+ df_timeseries <- fun_Wait_to_1st_Activity_REGION_timeseries()
+#plot the time series
+ fun_Wait_to_1st_activity_Plot_timeseries(df_timeseries)
+#get the box values
+ box_value <- fun_for_box_value_wait_to_first(df_timeseries)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_wait_to_1st_activity_REGION()
+#format the table
+fun_fmt_Wait_to_1st_Activity(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_Wait_to_1st_Activity_ICB_timeseries("BSW")
+fun_Wait_to_1st_activity_Plot_timeseries(df_timeseries)
+#get the box values
+ box_value <- fun_for_box_value_wait_to_first(df_timeseries)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_wait_to_1st_activity_ICB("BSW")
+fun_fmt_Wait_to_1st_Activity(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+
+## Organisations
+
+:::::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_Wait_to_1st_Activity_ORG_timeseries("RN3")
+fun_Wait_to_1st_activity_Plot_timeseries(df_timeseries)
+#get the box values
+ box_value <- fun_for_box_value_wait_to_first(df_timeseries)
+```
+
+::: callout-note
+## Headline Statistics
+
+-   Baseline: RTT monthly published statistics for `r box_value[6]` is [`r box_value[4]`%]{style="color:#005EB8; font-weight:bold;"}
+-   Target: RTT monthly published statistics for `r box_value[5]` is [`r box_value[3]`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_wait_to_1st_activity_ORG("RN3")
+fun_fmt_Wait_to_1st_Activity(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_Wait_to_1st_Activity_ORG_timeseries("RD1")
+fun_Wait_to_1st_activity_Plot_timeseries(df_timeseries)
+#get the box values
+ box_value <- fun_for_box_value_wait_to_first(df_timeseries)
+```
+
+::: callout-note
+## Headline Statistics
+
+-   Baseline: RTT monthly published statistics for `r box_value[6]` is [`r box_value[4]`%]{style="color:#005EB8; font-weight:bold;"}
+-   Target: RTT monthly published statistics for `r box_value[5]` is [`r box_value[3]`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_wait_to_1st_activity_ORG("RD1")
+fun_fmt_Wait_to_1st_Activity(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_Wait_to_1st_Activity_ORG_timeseries("RNZ")
+fun_Wait_to_1st_activity_Plot_timeseries(df_timeseries)
+#get the box values
+ box_value <- fun_for_box_value_wait_to_first(df_timeseries)
+```
+
+::: callout-note
+## Headline Statistics
+
+-   Baseline: RTT monthly published statistics for `r box_value[6]` is [`r box_value[4]`%]{style="color:#005EB8; font-weight:bold;"}
+-   Target: RTT monthly published statistics for `r box_value[5]` is [`r box_value[3]`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_wait_to_1st_activity_ORG("RNZ")
+fun_fmt_Wait_to_1st_Activity(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+::::::
+:::::::::
+
+## Proportion of 52+ weeks
+
+Reduce the proportion of people waiting over 52 weeks for treatment to less than [**1%**]{style="color:#005EB8;"} of the total waiting list by March 2027
+
+:::::::::::::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+ df_timeseries <- fun_52_week_perc_REGION_timeseries()
+fun_52_week_perc_Plot_timeseries(df_timeseries)
+#get the box values
+ box_value_52_plus <- fun_for_box_value_52_plus_week(df_timeseries)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   Latest RTT monthly published statistics for [`r box_value_52_plus[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_plus[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_plus[2], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries1 <- fun_52_week_volume_REGION_timeseries()
+fun_52_week_volume_Plot_timeseries(df_timeseries1)
+#get the box values
+ box_value_52_volumes <- fun_for_box_value_52_plus_week_volumes(df_timeseries1)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   Latest RTT monthly published statistics for [`r box_value_52_volumes[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_volumes[1], big.mark = ",", scientific = FALSE)`]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_volumes[2], big.mark = ",", scientific = FALSE)`]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_52_week_perc_REGION()
+#format the table
+fun_fmt_52_week_perc(df_provider)
+
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_52_week_perc_ICB_timeseries("BSW")
+fun_52_week_perc_Plot_timeseries(df_timeseries)
+box_value_52_plus <- fun_for_box_value_52_plus_week(df_timeseries)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   Latest RTT monthly published statistics for [`r box_value_52_plus[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_plus[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_plus[2], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries1 <- fun_52_week_volume_ICB_timeseries("BSW")
+fun_52_week_volume_Plot_timeseries(df_timeseries1)
+#get the box values
+ box_value_52_volumes <- fun_for_box_value_52_plus_week_volumes(df_timeseries1)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   Latest RTT monthly published statistics for [`r box_value_52_volumes[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_volumes[1], big.mark = ",", scientific = FALSE)`]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_volumes[2], big.mark = ",", scientific = FALSE)`]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_52_week_perc_ICB("BSW")
+fun_fmt_52_week_perc(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+
+## Organisations
+
+::::::::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_52_week_perc_ORG_timeseries("RN3")
+fun_52_week_perc_Plot_timeseries(df_timeseries)
+box_value_52_plus <- fun_for_box_value_52_plus_week(df_timeseries)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   Latest RTT monthly published statistics for [`r box_value_52_plus[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_plus[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_plus[2], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries1 <- fun_52_week_volume_ORG_timeseries("RN3")
+fun_52_week_volume_Plot_timeseries(df_timeseries1)
+#get the box values
+ box_value_52_volumes <- fun_for_box_value_52_plus_week_volumes(df_timeseries1)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   Latest RTT monthly published statistics for [`r box_value_52_volumes[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_volumes[1], big.mark = ",", scientific = FALSE)`]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_volumes[2], big.mark = ",", scientific = FALSE)`]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_52_week_perc_ORG("RN3")
+fun_fmt_52_week_perc(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_52_week_perc_ORG_timeseries("RD1")
+fun_52_week_perc_Plot_timeseries(df_timeseries)
+box_value_52_plus <- fun_for_box_value_52_plus_week(df_timeseries)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   Latest RTT monthly published statistics for [`r box_value_52_plus[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_plus[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_plus[2], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries1 <- fun_52_week_volume_ORG_timeseries("RD1")
+fun_52_week_volume_Plot_timeseries(df_timeseries1)
+#get the box values
+ box_value_52_volumes <- fun_for_box_value_52_plus_week_volumes(df_timeseries1)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   Latest RTT monthly published statistics for [`r box_value_52_volumes[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_volumes[1], big.mark = ",", scientific = FALSE)`]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_volumes[2], big.mark = ",", scientific = FALSE)`]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_52_week_perc_ORG("RD1")
+fun_fmt_52_week_perc(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_52_week_perc_ORG_timeseries("RNZ")
+fun_52_week_perc_Plot_timeseries(df_timeseries)
+box_value_52_plus <- fun_for_box_value_52_plus_week(df_timeseries)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   Latest RTT monthly published statistics for [`r box_value_52_plus[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_plus[1], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_plus[2], big.mark = ",", scientific = FALSE)`%]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries1 <- fun_52_week_volume_ORG_timeseries("RNZ")
+fun_52_week_volume_Plot_timeseries(df_timeseries1)
+#get the box values
+ box_value_52_volumes <- fun_for_box_value_52_plus_week_volumes(df_timeseries1)
+```
+
+::: {.callout-note collapse="false"}
+## Headline Statistics
+
+-   Latest RTT monthly published statistics for [`r box_value_52_volumes[3]`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_volumes[1], big.mark = ",", scientific = FALSE)`]{style="color:#005EB8; font-weight:bold;"}
+-   Latest WLMDS for week ending [`r week_ending`]{style="color:#005EB8; font-weight:bold;"} is [`r format(box_value_52_volumes[2], big.mark = ",", scientific = FALSE)`]{style="color:#005EB8; font-weight:bold;"}
+:::
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_52_week_perc_ORG("RNZ")
+fun_fmt_52_week_perc(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/OpenPathwaysLongWaiters?:iid=2">View Summary table on the WLMDS dashboard</a>
+:::::::::
+::::::::::::::
+
+## 12+ week validation
+
+Validate pathways on an RTT waiting list after 12 weeks and then every 12 weeks in line with good practice and published guidance, maximising the use of digital tools for both patient contact and data quality.
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- fun_12week_validation_REGION_timeseries()
+fun_12plus_week_validation_Plot_timeseries(df_timeseries)
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_12plus_week_validation_REGION()
+#format the table
+fun_fmt_12week_validation(df_provider)
+
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/Validations?=null&:iid=2 ">View Validation sheet on the WLMDS dashboard</a> <a href="https://future.nhs.uk/SWElectiveCareRecovery/view?objectId=254278789 ">View Validation sprint report</a>
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_12week_validation_ICB_timeseries("BSW")
+fun_12plus_week_validation_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_12plus_week_validation_ICB("BSW")
+#format the table
+fun_fmt_12week_validation(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/Validations?=null&:iid=2 ">View Validation sheet on the WLMDS dashboard</a> <a href="https://future.nhs.uk/SWElectiveCareRecovery/view?objectId=254278789 ">View Validation sprint report</a>
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_12week_validation_ORG_timeseries("RN3")
+fun_12plus_week_validation_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_12plus_week_validation_ORG("RN3")
+fun_fmt_12week_validation(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/Validations?=null&:iid=2 ">View Validation sheet on the WLMDS dashboard</a> <a href="https://future.nhs.uk/SWElectiveCareRecovery/view?objectId=254278789 ">View Validation sprint report</a>
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_12week_validation_ORG_timeseries("RD1")
+fun_12plus_week_validation_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_12plus_week_validation_ORG("RD1")
+fun_fmt_12week_validation(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/Validations?=null&:iid=2 ">View Validation sheet on the WLMDS dashboard</a> <a href="https://future.nhs.uk/SWElectiveCareRecovery/view?objectId=254278789 ">View Validation sprint report</a>
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_12week_validation_ORG_timeseries("RNZ")
+fun_12plus_week_validation_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_12plus_week_validation_ORG("RNZ")
+fun_fmt_12week_validation(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestWLMDSDashboard/Validations?=null&:iid=2 ">View Validation sheet on the WLMDS dashboard</a> <br> <a href="https://future.nhs.uk/SWElectiveCareRecovery/view?objectId=254278789 ">View Validation sprint report</a>
+:::
+::::
+
+# Outpatients
+
+## Advice & Guidance: Pre-referral
+
+Communication and feedback between primary and secondary care clinicians - focus on the quality of clinical information provided by both referrers and providers. Patients referred to a clinic following advice and guidance may be further along their care pathway and may require fewer follow up appointments in secondary care.
+
+### Specialist Advice utilisation - pre referral
+
+Numerator: Number of processed requests <br>Denominator: Outpatient first attendances
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- fun_pre_referral_utilisation_REGION_timeseries()
+fun_pre_referral_utilisation_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_pre_referral_utilisation_REGION()
+#format the table
+fun_fmt_pre_referral_utilisation(df_provider)
+
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_pre_referral_utilisation_ICB_timeseries("BSW")
+fun_pre_referral_utilisation_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_pre_referral_utilisation_ICB("BSW")
+fun_fmt_pre_referral_utilisation(df_provider)
+
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_pre_referral_utilisation_ORG_timeseries("RN3")
+fun_pre_referral_utilisation_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_pre_referral_utilisation_ORG("RN3")
+fun_fmt_pre_referral_utilisation(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_pre_referral_utilisation_ORG_timeseries("RD1")
+fun_pre_referral_utilisation_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_pre_referral_utilisation_ORG("RD1")
+fun_fmt_pre_referral_utilisation(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_pre_referral_utilisation_ORG_timeseries("RNZ")
+fun_pre_referral_utilisation_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_pre_referral_utilisation_ORG("RNZ")
+fun_fmt_pre_referral_utilisation(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+:::
+::::
+
+### Specialist Advice diversion - pre referral
+
+Numerator: Number of diverted requests <br>Denominator: Total specialist advice requests
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- fun_pre_referral_diversion_REGION_timeseries()
+fun_pre_referral_diversion_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_pre_referral_diversion_REGION()
+#format the table
+fun_fmt_pre_referral_diversion(df_provider)
+
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_pre_referral_diversion_ICB_timeseries("BSW")
+fun_pre_referral_diversion_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_pre_referral_diversion_ICB("BSW")
+fun_fmt_pre_referral_diversion(df_provider)
+
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_pre_referral_diversion_ORG_timeseries("RN3")
+fun_pre_referral_diversion_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_pre_referral_diversion_ORG("RN3")
+fun_fmt_pre_referral_diversion(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_pre_referral_diversion_ORG_timeseries("RD1")
+fun_pre_referral_diversion_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_pre_referral_diversion_ORG("RD1")
+fun_fmt_pre_referral_diversion(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_pre_referral_diversion_ORG_timeseries("RNZ")
+fun_pre_referral_diversion_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_pre_referral_diversion_ORG("RNZ")
+fun_fmt_pre_referral_diversion(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+:::
+::::
+
+## Specific acute activity
+
+### Specific acute 1st outpatient activity
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- op_spec_acute_1st_appt_REGION_timeseries()
+op_spec_acute_1st_appt_Plot_timeseries_REGION(df_timeseries)
+
+```
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- op_spec_acute_1st_appt_ICB_timeseries("BSW")
+op_spec_acute_1st_appt_Plot_timeseries(df_timeseries)
+
+```
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- op_spec_acute_1st_appt_ORG_timeseries("RN3")
+op_spec_acute_1st_appt_Plot_timeseries(df_timeseries)
+
+```
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- op_spec_acute_1st_appt_ORG_timeseries("RD1")
+op_spec_acute_1st_appt_Plot_timeseries(df_timeseries)
+
+```
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- op_spec_acute_1st_appt_ORG_timeseries("RNZ")
+op_spec_acute_1st_appt_Plot_timeseries(df_timeseries)
+
+```
+:::
+::::
+
+### Specific acute follow-up outpatient activity
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- op_spec_acute_follow_up_REGION_timeseries()
+op_spec_acute_followup_Plot_timeseries_REGION(df_timeseries)
+```
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- op_spec_acute_follow_up_ICB_timeseries("BSW")
+op_spec_acute_followup_Plot_timeseries_REGION(df_timeseries)
+
+```
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- op_spec_acute_follow_up_ORG_timeseries("RN3")
+op_spec_acute_followup_Plot_timeseries(df_timeseries)
+
+```
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- op_spec_acute_follow_up_ORG_timeseries("RD1")
+op_spec_acute_followup_Plot_timeseries(df_timeseries)
+
+```
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- op_spec_acute_follow_up_ORG_timeseries("RNZ")
+op_spec_acute_followup_Plot_timeseries(df_timeseries)
+
+```
+:::
+::::
+
+### First to follow up ratios
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- op_spec_acute_1st_followup_ratios_REGION_timeseries()
+op_spec_acute_followup_ratios_Plot_timeseries(df_timeseries)
+```
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- op_spec_acute_1st_followup_ratios_ICB_timeseries("BSW")
+op_spec_acute_followup_ratios_Plot_timeseries(df_timeseries)
+
+```
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- op_spec_acute_1st_followup_ratios_ORG_timeseries("RN3")
+op_spec_acute_followup_ratios_Plot_timeseries(df_timeseries)
+
+```
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- op_spec_acute_1st_followup_ratios_ORG_timeseries("RD1")
+op_spec_acute_followup_ratios_Plot_timeseries(df_timeseries)
+
+```
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- op_spec_acute_1st_followup_ratios_ORG_timeseries("RNZ")
+op_spec_acute_followup_ratios_Plot_timeseries(df_timeseries)
+
+```
+:::
+::::
+
+### Remote and virtual consultations
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- fun_op_remote_virtual_REGION_timeseries()
+fun_op_remote_virtual_plot_timeseries(df_timeseries)
+```
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_op_remote_virtual_ICB_timeseries("BSW")
+fun_op_remote_virtual_plot_timeseries(df_timeseries)
+
+```
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_op_remote_virtual_ORG_timeseries("RN3")
+fun_op_remote_virtual_plot_timeseries(df_timeseries)
+
+```
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_op_remote_virtual_ORG_timeseries("RD1")
+fun_op_remote_virtual_plot_timeseries(df_timeseries)
+
+```
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_op_remote_virtual_ORG_timeseries("RNZ")
+fun_op_remote_virtual_plot_timeseries(df_timeseries)
+
+```
+:::
+::::
+
+## PIFU and missed appointments
+
+### PIFU Utilisation
+
+Patient Initiated Follow-Up (PIFU) gives patients the flexibility to arrange their follow-up appointments as and when they need them. The national expectation is that PIFU utilisation should exceed [**5%**]{style="color:#005EB8;"} where appropriate.
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- fun_pifu_utilisation_REGION_timeseries()
+fun_pifu_utilisation_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_pifu_utilisation_REGION()
+#format the table
+fun_fmt_pifu_utilisation(df_provider)
+
+```
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_pifu_utilisation_ICB_timeseries("BSW")
+fun_pifu_utilisation_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_pifu_utilisation_ICB("BSW")
+#format the table
+fun_fmt_pifu_utilisation(df_provider)
+```
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_pifu_utilisation_ORG_timeseries("RN3")
+fun_pifu_utilisation_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_pifu_utilisation_ORG("RN3")
+fun_fmt_pifu_utilisation(df_provider)
+```
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_pifu_utilisation_ORG_timeseries("RD1")
+fun_pifu_utilisation_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_pifu_utilisation_ORG("RD1")
+fun_fmt_pifu_utilisation(df_provider)
+```
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_pifu_utilisation_ORG_timeseries("RNZ")
+fun_pifu_utilisation_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_pifu_utilisation_ORG("RNZ")
+fun_fmt_pifu_utilisation(df_provider)
+```
+:::
+::::
+
+### Missed appointments
+
+To enable the maximum use of all outpatient appointments, this metric aims to reduce the proportion of missed appointments. Organisations should have a missed outpatient rate less than [**5%**]{style="color:#005EB8;"} .
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- fun_missed_appointments_REGION_timeseries()
+fun_missed_appointments_Plot_timeseries(df_timeseries)
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_missed_appointments_REGION()
+#format the table
+fun_fmt_missed_appointments(df_provider)
+
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_missed_appointments_ICB_timeseries("BSW")
+fun_missed_appointments_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_missed_appointments_ICB("BSW")
+#format the table
+fun_fmt_missed_appointments(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_missed_appointments_ORG_timeseries("RN3")
+fun_missed_appointments_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_missed_appointments_ORG("RN3")
+fun_fmt_missed_appointments(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_missed_appointments_ORG_timeseries("RD1")
+fun_missed_appointments_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_missed_appointments_ORG("RD1")
+fun_fmt_missed_appointments(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_missed_appointments_ORG_timeseries("RNZ")
+fun_missed_appointments_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_missed_appointments_ORG("RNZ")
+fun_fmt_missed_appointments(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestOutpatientsDashboard/Overview?:iid=1 ">View Outpatient dashboard</a>
+:::
+::::
+
+# Cancer
+
+The Cancer Waiting Times is for the waiting times of people referred with suspected cancer or breast symptoms and subsequently told the outcome of their diagnosis and treated for cancer by the NHS in England. The data is published on the NHS England website here: <a href="https://www.england.nhs.uk/statistics/statistical-work-areas/cancer-waiting-times/"> Cancer waiting times</a> and the three key Cancer Performance metrics are: 28 Day Faster Diagnosis Standard, 31 Day Combined Standard and 62 Day Combined Standard.
+
+## Faster diagnosis and combined standards
+
+### 28-day Faster Diagnosis Standard
+
+Target aims for [**75%**]{style="color:#005EB8;"} of people to receive a cancer diagnosis or to be confirmed that they do not have cancer within four weeks (28 days) from urgent referral.
+
+Numerator = Number of people told cancer diagnosis outcome within 28 days\
+Denominator = Total number of people told cancer diagnosis outcome
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- fun_28days_faster_diag_std_REGION_timeseries()
+fun_28days_faster_diag_std_Plot_timeseries(df_timeseries)
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_28days_faster_diag_std_REGION()
+#format the table
+fun_fmt_28days_fds(df_provider)
+
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard</a>
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_28days_faster_diag_std_ICB_timeseries("BSW")
+fun_28days_faster_diag_std_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_28days_faster_diag_std_ICB("BSW")
+#format the table
+fun_fmt_28days_fds(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard</a>
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_28days_faster_diag_std_ORG_timeseries("RN3")
+fun_28days_faster_diag_std_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_28days_faster_diag_std_ORG("RN3")
+fun_fmt_28days_fds(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard dashboard</a>
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_28days_faster_diag_std_ORG_timeseries("RD1")
+fun_28days_faster_diag_std_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_28days_faster_diag_std_ORG("RD1")
+fun_fmt_28days_fds(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard</a>
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_28days_faster_diag_std_ORG_timeseries("RNZ")
+fun_28days_faster_diag_std_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_28days_faster_diag_std_ORG("RNZ")
+fun_fmt_28days_fds(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard</a>
+:::
+::::
+
+### 31-day Combined Standard
+
+Target aims for [**96%**]{style="color:#005EB8;"} of people to wait one month (31 days) from a decision to treatment / earliest clinically appropriate date to first or subsequent treatment of cancer.
+
+Numerator = Number of people receiving treatment for cancer within 31 days\
+Denominator = Total number of people receiving treatment for cancer
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- fun_31days_combined_std_REGION_timeseries()
+fun_31days_combined_Plot_timeseries(df_timeseries)
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_31days_combined_std_REGION()
+#format the table
+fun_fmt_31days_comb_std(df_provider)
+
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard</a>
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_31days_combined_std_ICB_timeseries("BSW")
+fun_31days_combined_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_31days_combined_std_ICB("BSW")
+#format the table
+fun_fmt_31days_comb_std(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard</a>
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_31days_combined_std_ORG_timeseries("RN3")
+fun_31days_combined_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_31days_combined_std_ORG("RN3")
+fun_fmt_31days_comb_std(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard</a>
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_31days_combined_std_ORG_timeseries("RD1")
+fun_31days_combined_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_31days_combined_std_ORG("RD1")
+fun_fmt_31days_comb_std(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard</a>
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_31days_combined_std_ORG_timeseries("RNZ")
+fun_31days_combined_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_31days_combined_std_ORG("RNZ")
+fun_fmt_31days_comb_std(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard</a>
+:::
+::::
+
+### 62-day Combined Standard
+
+Target aims for [**85%**]{style="color:#005EB8;"} of people to wait two months (62 days) from an urgent suspected cancer or breast symptomatic referral, or urgent screening referral, or consultant upgrade to a first definitive treatment for cancer.
+
+Numerator = Number of people receiving treatment for cancer within 62 days\
+Denominator = Total number of people receiving treatment for cancer
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- fun_62days_combined_std_REGION_timeseries()
+fun_62days_combined_Plot_timeseries(df_timeseries)
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_62days_combined_std_REGION()
+#format the table
+fun_fmt_62days_comb_std(df_provider)
+
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard</a>
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_62days_combined_std_ICB_timeseries("BSW")
+fun_62days_combined_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_62days_combined_std_ICB("BSW")
+#format the table
+fun_fmt_62days_comb_std(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard</a>
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_62days_combined_std_ORG_timeseries("RN3")
+fun_62days_combined_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_62days_combined_std_ORG("RN3")
+fun_fmt_62days_comb_std(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard</a>
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_62days_combined_std_ORG_timeseries("RD1")
+fun_62days_combined_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_62days_combined_std_ORG("RD1")
+fun_fmt_62days_comb_std(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard</a>
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_62days_combined_std_ORG_timeseries("RNZ")
+fun_62days_combined_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_62days_combined_std_ORG("RNZ")
+fun_fmt_62days_comb_std(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestCancerDashboard_17277792503610/LatestPosition?:iid=1">View Cancer dashboard</a>
+:::
+::::
+
+# Diagnostics
+
+The DM01 is the monthly diagnostics collection, which collects data on waiting times and activity for 15 key diagnostics tests and procedures at all NHS organisations. The data is published on the NHS England website here: <a herf = "https://www.england.nhs.uk/statistics/statistical-work-areas/diagnostics-waiting-times-and-activity/"> Diagnostics waiting times and activity</a> and the Diagnostic Performance metric is: patients waiting over 6 weeks for a diagnostic test.
+
+## Waiting list and activity
+
+### Diagnostic Performance
+
+Target aims for less than [**1%**]{style="color:#005EB8;"} of patients to wait 6 weeks or over for a diagnostic test or procedure.
+
+Numerator = Number of patients waiting 6+ weeks\
+Denominator = Total Diagnostics waiting list
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- fun_6plus_week_perc_REGION_timeseries()
+fun_6plus_week_perc_Plot_timeseries(df_timeseries)
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_6plus_week_perc_REGION()
+#format the table
+fun_fmt_6plus_week_perc(df_provider)
+
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestDiagnosticsDashboard/WLMDS?:iid=2">View WLMDS sheet on the Diagnostics dashboard</a>
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_6plus_week_perc_ICB_timeseries("BSW")
+fun_6plus_week_perc_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_6plus_week_perc_ICB("BSW")
+#format the table
+fun_fmt_6plus_week_perc(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestDiagnosticsDashboard/WLMDS?:iid=2">View WLMDS sheet on the Diagnostics dashboard</a>
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_6plus_week_perc_ORG_timeseries("RN3")
+fun_6plus_week_perc_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_6plus_week_perc_ORG("RN3")
+fun_fmt_6plus_week_perc(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestDiagnosticsDashboard/WLMDS?:iid=2">View WLMDS sheet on the Diagnostics dashboard</a>
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_6plus_week_perc_ORG_timeseries("RD1")
+fun_6plus_week_perc_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_6plus_week_perc_ORG("RD1")
+try(fun_fmt_6plus_week_perc(df_provider), silent = TRUE)
+#fun_fmt_6plus_week_perc(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestDiagnosticsDashboard/WLMDS?:iid=2">View WLMDS sheet on the Diagnostics dashboard</a>
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_6plus_week_perc_ORG_timeseries("RNZ")
+fun_6plus_week_perc_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_6plus_week_perc_ORG("RNZ")
+fun_fmt_6plus_week_perc(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestDiagnosticsDashboard/WLMDS?:iid=2">View WLMDS sheet on the Diagnostics dashboard</a>
+:::
+::::
+
+### Diagnostic activity
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- fun_diag_activity_REGION_timeseries()
+fun_diag_activity_Plot_timeseries(df_timeseries)
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_diag_activity_REGION()
+#format the table
+fun_fmt_diag_activity(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestDiagnosticsDashboard/SouthWestOverview?:iid=1">View Diagnostics dashboard</a>
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_diag_activity_ICB_timeseries("BSW")
+fun_diag_activity_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table
+df_provider <- fun_diag_activity_ICB("BSW")
+#format the table
+fun_fmt_diag_activity(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestDiagnosticsDashboard/SouthWestOverview?:iid=1">View Diagnostics dashboard</a>
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_diag_activity_ORG_timeseries("RN3")
+fun_diag_activity_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_diag_activity_ORG("RN3")
+fun_fmt_diag_activity(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestDiagnosticsDashboard/SouthWestOverview?:iid=1">View Diagnostics dashboard</a>
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_diag_activity_ORG_timeseries("RD1")
+fun_diag_activity_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_diag_activity_ORG("RD1")
+fun_fmt_diag_activity(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestDiagnosticsDashboard/SouthWestOverview?:iid=1">View Diagnostics dashboard</a>
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_diag_activity_ORG_timeseries("RNZ")
+fun_diag_activity_Plot_timeseries(df_timeseries)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_provider <- fun_diag_activity_ORG("RNZ")
+fun_fmt_diag_activity(df_provider)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestDiagnosticsDashboard/SouthWestOverview?:iid=1">View Diagnostics dashboard</a>
+:::
+::::
+
+# Inpatients
+
+## Theatre cancellations
+
+This indicator has been included to develop an understanding of the booked case cancellations that occur within an organisation. Please note that this is an experimental metric, under active development and should not be used for benchmarking or performance measures.
+
+### Case cancellation metrics
+
+::: panel-tabset
+## Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_theatre_cancellation_ORG_timeseries("RN3")
+fun_theatre_cancellation_Plot_timeseries(df_timeseries)
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_theatre_cancellation_ORG_tab("RN3")
+fun_fmt_theatre_cancellation_tab(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/TheatreCancellations?:iid=1">View Case Cancellations sheet in the Theatres dashboard</a> <a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/LatestPosition?:iid=1">View Theatres dashboard</a> \## RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_theatre_cancellation_ORG_timeseries("RD1")
+fun_theatre_cancellation_Plot_timeseries(df_timeseries)
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_theatre_cancellation_ORG_tab("RD1")
+fun_fmt_theatre_cancellation_tab(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/TheatreCancellations?:iid=1">View Case Cancellations sheet in the Theatres dashboard</a> <a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/LatestPosition?:iid=1">View Theatres dashboard</a>
+
+## Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_theatre_cancellation_ORG_timeseries("RNZ")
+fun_theatre_cancellation_Plot_timeseries(df_timeseries)
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_theatre_cancellation_ORG_tab("RNZ")
+fun_fmt_theatre_cancellation_tab(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/TheatreCancellations?:iid=1">View Case Cancellations sheet in the Theatres dashboard</a> <a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/LatestPosition?:iid=1">View Theatres dashboard</a>
+:::
+
+## Capped theatre utilisation
+
+Capped elective theatre utilisation is one of the key operating theatre efficiency metrics. This indicator helps understand the effectiveness of the operation scheduling processes within planned valid elective sessions in comparison to other organisations.
+
+::: panel-tabset
+## Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_theatre_utilisation_ORG_timeseries("RN3")
+fun_theatre_utilisation_Plot_timeseries(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/TheatreCancellations?:iid=1">View Theatres dashboard</a>
+
+## RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_theatre_utilisation_ORG_timeseries("RD1")
+fun_theatre_utilisation_Plot_timeseries(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/TheatreCancellations?:iid=1">View Theatres dashboard</a>
+
+## Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_theatre_utilisation_ORG_timeseries("RNZ")
+fun_theatre_utilisation_Plot_timeseries(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/TheatreCancellations?:iid=1">View Theatres dashboard</a>
+:::
+
+## Average number of cases per equivalent 4 hour valid elective session
+
+::: panel-tabset
+## Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_theatre_avgcases_ORG_timeseries("RN3")
+fun_theatre_avgcases_Plot_timeseries(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/TheatreCancellations?:iid=1">View Theatres dashboard</a>
+
+## RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_theatre_avgcases_ORG_timeseries("RD1")
+fun_theatre_avgcases_Plot_timeseries(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/TheatreCancellations?:iid=1">View Theatres dashboard</a>
+
+## Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_theatre_avgcases_ORG_timeseries("RNZ")
+fun_theatre_avgcases_Plot_timeseries(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/TheatreCancellations?:iid=1">View Theatres dashboard</a>
+:::
+
+## Specific acute activity
+
+### Specific acute day case activity
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- ip_spec_acute_day_case_activity_REGION_timeseries()
+ip_spec_acute_day_case_activity_Plot_timeseries_ICB(df_timeseries)
+```
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- ip_spec_acute_day_case_activity_ICB_timeseries("BSW")
+ip_spec_acute_day_case_activity_Plot_timeseries_ICB(df_timeseries)
+
+```
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-ip_spec_acute_day_case_activity_ORG_timeseries("RN3")
+ip_spec_acute_day_case_activity_Plot_timeseries(df_timeseries)
+```
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-ip_spec_acute_day_case_activity_ORG_timeseries("RD1")
+ip_spec_acute_day_case_activity_Plot_timeseries(df_timeseries)
+```
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- ip_spec_acute_day_case_activity_ORG_timeseries("RNZ")
+ip_spec_acute_day_case_activity_Plot_timeseries(df_timeseries)
+```
+:::
+::::
+
+### Specific acute elective ordinary activity
+
+:::: panel-tabset
+## South West
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+#create table for time series
+df_timeseries <- ip_spec_acute_elec_ord_activity_REGION_timeseries()
+ip_spec_acute_elec_ord_activity_Plot_timeseries(df_timeseries)
+```
+
+## BSW
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- ip_spec_acute_elec_ord_activity_ICB_timeseries("BSW")
+ip_spec_acute_elec_ord_activity_Plot_timeseries(df_timeseries)
+
+```
+
+## Organisations
+
+::: panel-tabset
+# Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-ip_spec_acute_elec_ord_activity_ORG_timeseries("RN3")
+ip_spec_acute_elec_ord_activity_Plot_timeseries(df_timeseries)
+```
+
+# RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-ip_spec_acute_elec_ord_activity_ORG_timeseries("RD1")
+ip_spec_acute_elec_ord_activity_Plot_timeseries(df_timeseries)
+```
+
+# Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-ip_spec_acute_elec_ord_activity_ORG_timeseries("RNZ")
+ip_spec_acute_elec_ord_activity_Plot_timeseries(df_timeseries)
+```
+:::
+::::
+
+## Day case and outpatient procedure rate
+
+Increase the proportion of procedures undertaken as an outpatient procedure or a day case surgery following the guidance by the British Association of Day Surgery (BADS).
+
+### Day case and outpatient procedure rates
+
+::: panel-tabset
+## Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_dc_and_op_ORG_timeseries("RN3")
+fun_dc_and_op_plot_timeseries(df_timeseries)
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_dc_and_op_ORG_table("RN3")
+fun_fmt_ip_dc_and_op(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/LatestPosition?:iid=1">View Theatres dashboard</a>
+
+## RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_dc_and_op_ORG_timeseries("RD1")
+fun_dc_and_op_plot_timeseries(df_timeseries)
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_dc_and_op_ORG_table("RD1")
+fun_fmt_ip_dc_and_op(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/LatestPosition?:iid=1">View Theatres dashboard</a>
+
+## Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <- fun_dc_and_op_ORG_timeseries("RNZ")
+fun_dc_and_op_plot_timeseries(df_timeseries)
+```
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_dc_and_op_ORG_table("RNZ")
+fun_fmt_ip_dc_and_op(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/LatestPosition?:iid=1">View Theatres dashboard</a>
+:::
+
+## EBI (Evidence Based Interventions)
+
+The aim of the EBI Programme is to improve the quality of care being offered to patients by reducing unnecessary interventions and preventing avoidable harm. For further details please see: <a href="https://digital.nhs.uk/services/secondary-uses-service-sus/payment-by-results-guidance/sus-pbr-reference-manual/evidence-based-interventions">Reference manual: Evidence-based interventions</a>
+
+::: panel-tabset
+## Gt Western
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_ebi_procedure_ORG("RN3")
+fun_fmt_ebi_procedure(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/EvidenceBasedInterventions?:iid=1">View EBI sheet on Theatres dashboard</a>
+
+## RUH Bath
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_ebi_procedure_ORG("RD1")
+fun_fmt_ebi_procedure(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/EvidenceBasedInterventions?:iid=1">View EBI sheet on Theatres dashboard</a>
+
+## Salisbury
+
+```{r echo=FALSE, message=FALSE, warning = FALSE}
+df_timeseries <-fun_ebi_procedure_ORG("RNZ")
+fun_fmt_ebi_procedure(df_timeseries)
+```
+
+<a href="https://tabanalytics.data.england.nhs.uk/#/views/SouthWestTheatreProductivityDashboard_16831063447720/EvidenceBasedInterventions?:iid=1">View EBI sheet on Theatres dashboard</a>
+:::
