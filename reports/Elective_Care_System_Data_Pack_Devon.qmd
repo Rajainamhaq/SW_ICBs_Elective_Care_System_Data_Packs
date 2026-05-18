@@ -83,7 +83,7 @@ source(here("R","call_functions_timeseries_plot.R"))
 ## Data Sources
 
 -   Month = RTT monthly published statistics
--   Plans = Plans submitted during the 25/26 planning round
+-   Plans = Plans submitted during the 26/27 planning round
 -   WLMDS = Waiting List Minimum Data Set
 -   DM01 = Monthly Diagnostic Waiting Times and Activity
 -   SUS OPA = Secondary Uses Statistics Outpatient Appointments
@@ -105,7 +105,7 @@ source(here("R","call_functions_timeseries_plot.R"))
 
 **2025/26 elective waiting list priority metrics**
 
-The national elective priority to improve patient outcomes in 2025/26 is to reduce the time people wait for elective care. This is to be achieved through improving the percentage of patients waiting no longer than 18 weeks for elective treatment to [**65%**]{style="color:#005EB8;"} nationally by March 2027, with every trust expected to deliver a minimum [**5**]{style="color:#005EB8;"} percentage points improvement. Systems are expected to continue to improve performance against the cancer 62-day and 28-day Faster Diagnosis Standard (FDS) to [**75%**]{style="color:#005EB8;"} and [**80%**]{style="color:#005EB8;"} respectively by March 2027. Further details can be found here: <a href="https://www.england.nhs.uk/long-read/2025-26-priorities-and-operational-planning-guidance" target="_blank"> 2025-26 Priorities and Operational Planning Guidance</a>
+The national elective priority to improve patient outcomes in 2026/27 is to reduce the time people wait for elective care. This is to be achieved through improving the percentage of patients waiting no longer than 18 weeks for elective treatment to [**65%**]{style="color:#005EB8;"} nationally by March 2027, with every trust expected to deliver a minimum [**5**]{style="color:#005EB8;"} percentage points improvement. Systems are expected to continue to improve performance against the cancer 62-day and 28-day Faster Diagnosis Standard (FDS) to [**75%**]{style="color:#005EB8;"} and [**80%**]{style="color:#005EB8;"} respectively by March 2027. Further details can be found here: <a href="https://www.england.nhs.uk/long-read/2025-26-priorities-and-operational-planning-guidance" target="_blank"> 2025-26 Priorities and Operational Planning Guidance</a>
 
 ## Change in waiting list
 
