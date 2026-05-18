@@ -12,13 +12,13 @@ library(here)
 ## preserving all the css formatting and tab settings.
 ################################################################################
 files <- c(
-  "reports/Elective_Care_System_Data_Pack_BNSSG.qmd",
-  "reports/Elective_Care_System_Data_Pack_BSW.qmd",
-  "reports/Elective_Care_System_Data_Pack_Cornwall.qmd",
-  "reports/Elective_Care_System_Data_Pack_Devon.qmd",
-  "reports/Elective_Care_System_Data_Pack_Dorset.qmd",
-  "reports/Elective_Care_System_Data_Pack_Glos.qmd",
-  "reports/Elective_Care_System_Data_Pack_Somerset.qmd"
+  here("reports", "Elective_Care_System_Data_Pack_BNSSG.qmd"),
+  here("reports", "Elective_Care_System_Data_Pack_BSW.qmd"),
+  here("reports", "Elective_Care_System_Data_Pack_Cornwall.qmd"),
+  here("reports", "Elective_Care_System_Data_Pack_Devon.qmd"),
+  here("reports", "Elective_Care_System_Data_Pack_Dorset.qmd"),
+  here("reports", "Elective_Care_System_Data_Pack_Glos.qmd"),
+  here("reports", "Elective_Care_System_Data_Pack_Somerset.qmd")
 )
 ################################################################################
 for (f in files) {
