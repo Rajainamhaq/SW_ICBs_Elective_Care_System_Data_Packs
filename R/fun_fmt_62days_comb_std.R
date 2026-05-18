@@ -8,7 +8,7 @@ fun_fmt_62days_comb_std <- function(df_62days_comb_std_table) {
   df_62days_comb_std_table
   df_62days_comb_std_table |>
     gt()  |>                 # put into a gt table
-    tab_header(title = "62-day Combined Standard (25/26 target = 75%)") |> 
+    tab_header(title = "62-day Combined Standard (26/27 target = 75%)") |> 
     
     fmt_auto() |>   #auto format the columns - changes to comma sep values for large numbers
     sub_missing() |> # present NA values as a -

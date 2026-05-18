@@ -10,7 +10,7 @@ fun_fmt_28days_fds <- function(df_28days_fds_table) {
   df_28days_fds_table
   df_28days_fds_table |>
     gt()  |>                 # put into a gt table
-    tab_header(title = "28-day Faster Diagnosis Standard (25/26 target = 80%)") |> 
+    tab_header(title = "28-day Faster Diagnosis Standard (26/27 target = 80%)") |> 
     
     fmt_auto() |>   #auto format the columns - changes to comma sep values for large numbers
     sub_missing() |> # present NA values as a -
