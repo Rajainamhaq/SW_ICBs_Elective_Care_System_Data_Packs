@@ -34,10 +34,10 @@ fun_diag_activity_REGION <- function() {
   ######### emailed Jo to clarify the logic of Plan column ###############
    
    RTT_plan <- data_diag_activity |>
-     filter(Reporting_Period >= "2025-04-01") |>
+     filter(Reporting_Period >= get_fy_start()) |>
      filter(Measure == "Diagnostic activity") |>
      filter(Data_Source == "Plans") |>
-     filter(FY == "25/26 plans") |>
+     filter(FY == get_current_fy_plans_label()) |>
      filter(Metric_Type ==  "Count") |>
      filter(Month == month_mmm) |>
      filter(!is.na(Specialty_Modality1)) |>
