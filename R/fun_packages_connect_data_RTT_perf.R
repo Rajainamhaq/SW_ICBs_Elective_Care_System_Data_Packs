@@ -50,7 +50,7 @@ con_datamart <-
 
 #### read the SQL Query ######
 data_RTT_datamart_data <- DBI::dbGetQuery(conn = con_datamart,
-                                          statement = read_file(here("data","data_DATAMART Dec 2025.sql")))
+                                          statement = read_file(here("data","data_DATAMART April 2026.sql")))
 
 data_RTT_datamart <- rbind(data_RTT_datamart_data,target_baseline_file)
 
