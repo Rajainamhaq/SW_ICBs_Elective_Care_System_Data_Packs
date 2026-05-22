@@ -5,6 +5,9 @@
 
 #create_main_df 
 fun_pre_referral_utilisation_ORG_timeseries <- function(org_code) {
+  
+  ## get the Target  and Baseline Values for the table below and will get used in box display
+  Targetv_spec_adv <- 12.6
  
   ###############################################################################
   ##### Prepare Data for line chart ############################################
@@ -51,8 +54,7 @@ fun_pre_referral_utilisation_ORG_timeseries <- function(org_code) {
     select(Reporting_Period,Month,Month_Yr,FY,data_tye, perf_perc)
   ##########################################
   
-  ## get the Target  and Baseline Values for the table below and will get used in box display
-  Targetv_spec_adv <- 12.6
+
   
   #Reporting_Period <- seq(as.Date("2025-04-01"), as.Date("2026-03-01"), by = "month")
   Reporting_Period <- seq(get_fy_start(), get_fy_end_march_start(), by = "month")
